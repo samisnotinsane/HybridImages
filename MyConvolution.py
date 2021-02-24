@@ -1,13 +1,5 @@
 import numpy as np
 
-def zero_padding(img: np.ndarray, template: np.ndarray) -> np.ndarray:
-    img_copy = img.copy()
-    rows, cols = template.shape
-    prows = int(np.floor(rows/2))
-    pcols = int(np.floor(cols/2))
-    padded_img = np.pad(img_copy, (prows, pcols), mode='constant')
-    return padded_img
-
 def convolve(image: np.ndarray, kernel: np.ndarray) -> np.ndarray:
     """
     Convolve an image with a kernel assuming zero-padding of the image to handle the borders
@@ -21,9 +13,23 @@ def convolve(image: np.ndarray, kernel: np.ndarray) -> np.ndarray:
     :returns the convolved image (of the same shape as the input image)
     :rtype numpy.ndarray
     """
-    kr, kc = kernel.shape
-    if kr % 3:
-        raise ValueError('Kernel cannot contain an even dimension!')
-    elif kc % 3:
-        raise ValueError('Kernel cannot contain an even dimension!')
-    print('Great!')
+    im_count_row, im_count_col = image.shape
+    kern_count_row, kern_count_col = kernel.shape
+    if (kern_count_row % 2) == 0:
+        raise ValueError('Kernel cannot be an even dimension!')
+    if (kern_count_col % 2) == 0:
+        raise ValueError('Kernel cannot be an even dimension!')
+    out = np.zeros_like(image)
+    # width of padding is half the size of kernel
+    image_padded = np.pad( np.floor((kern_count_row/2)), np.floor((kern_count_col/2)), mode='constant')
+    for x in range(im_count_col):
+        for y in range(im_count_row):
+            # guard against going past padding
+            if x >= (im_count_col - kern_count_col):
+                continue
+            if y >= (im_count_row - kern_count_row):
+                continue
+            # convolve
+            image_section = image_padded[x: x+kern_count_col, y: y+kern_count_row]
+            out[x,y] = (kernel * image_section).sum()
+    return out
