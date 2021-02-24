@@ -13,7 +13,6 @@ def convolve(image: np.ndarray, kernel: np.ndarray) -> np.ndarray:
     :returns the convolved image (of the same shape as the input image)
     :rtype numpy.ndarray
     """
-    im_count_row, im_count_col = image.shape
     kern_count_row, kern_count_col = kernel.shape
     if (kern_count_row % 2) == 0:
         raise ValueError('Kernel cannot be an even dimension!')
@@ -21,17 +20,43 @@ def convolve(image: np.ndarray, kernel: np.ndarray) -> np.ndarray:
         raise ValueError('Kernel cannot be an even dimension!')
     out = np.zeros_like(image)
     # width of padding is half the size of kernel
+
     pad_count_row = np.floor((kern_count_row/2)).astype(int)
     pad_count_col = np.floor((kern_count_col/2)).astype(int)
+
     image_padded = np.pad(image, (pad_count_row, pad_count_col), mode='constant')
-    for x in range(im_count_col):
-        for y in range(im_count_row):
-            # guard against going past padding
-            if x >= (im_count_col - kern_count_col):
-                continue
-            if y >= (im_count_row - kern_count_row):
-                continue
-            # convolve
-            image_section = image_padded[x: x+kern_count_col, y: y+kern_count_row]
-            out[x,y] = (kernel * image_section).sum()
+    image_padded[pad_count_row:-pad_count_col, pad_count_col:-pad_count_row] = image
+
+    # kernel application with sliding window
+    for x in range(image.shape[0]):
+        for y in range(image.shape[1]):
+            out[x,y]=(kernel * image_padded[x: x+kern_count_col, y: y+kern_count_row]).sum()
+
     return out
+
+def convolve(image, kernel):
+    """
+    This function which takes an image and a kernel and returns the convolution of them.
+
+    :param image: a numpy array of size [image_height, image_width].
+    :param kernel: a numpy array of size [kernel_height, kernel_width].
+    :return: a numpy array of size [image_height, image_width] (convolution output).
+    """
+    # convolution output
+    output = np.zeros_like(image)
+    kern_count_row, kern_count_col = kernel.shape
+
+    pad_count_row = np.floor((kern_count_row/2)).astype(int)
+    pad_count_col = np.floor((kern_count_col/2)).astype(int)
+
+    # Add zero padding to the input image
+    image_padded = np.pad(image, (pad_count_row, pad_count_col), mode='constant')
+
+    image_padded[pad_count_row:-pad_count_col, pad_count_col:-pad_count_row] = image
+
+    # Loop over every pixel of the image
+    for x in range(image.shape[0]):
+        for y in range(image.shape[1]):
+            output[x,y]=(kernel * image_padded[x: x+kern_count_col, y: y+kern_count_row]).sum()
+
+    return output
