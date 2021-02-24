@@ -21,7 +21,9 @@ def convolve(image: np.ndarray, kernel: np.ndarray) -> np.ndarray:
         raise ValueError('Kernel cannot be an even dimension!')
     out = np.zeros_like(image)
     # width of padding is half the size of kernel
-    image_padded = np.pad( np.floor((kern_count_row/2)), np.floor((kern_count_col/2)), mode='constant')
+    pad_count_row = np.floor((kern_count_row/2)).astype(int)
+    pad_count_col = np.floor((kern_count_col/2)).astype(int)
+    image_padded = np.pad(image, (pad_count_row, pad_count_col), mode='constant')
     for x in range(im_count_col):
         for y in range(im_count_row):
             # guard against going past padding
