@@ -24,12 +24,18 @@ def convolve(image: np.ndarray, kernel: np.ndarray) -> np.ndarray:
     pad_count_row = np.floor((kern_count_row/2)).astype(int)
     pad_count_col = np.floor((kern_count_col/2)).astype(int)
 
-    image_padded = np.pad(image, (pad_count_row, pad_count_col), mode='constant')
-    image_padded[pad_count_row:-pad_count_col, pad_count_col:-pad_count_row] = image
-
-    # kernel application with sliding window
-    for x in range(image.shape[0]):
-        for y in range(image.shape[1]):
-            out[x,y]=(kernel * image_padded[x: x+kern_count_col, y: y+kern_count_row]).sum()
-
+    if image.ndim == 2:
+        image_padded = np.pad(image, (pad_count_row, pad_count_col), mode='constant')
+        image_padded[pad_count_row:-pad_count_col, pad_count_col:-pad_count_row] = image
+        for x in range(image.shape[0]):
+            for y in range(image.shape[1]):
+                out[x,y]=(kernel * image_padded[x: x+kern_count_col, y: y+kern_count_row]).sum()
+    elif image.ndim == 3:
+        image_padded = np.pad(image, ((pad_count_row, pad_count_col),(pad_count_row, pad_count_col), (0,0)), mode='constant')
+        image_padded[pad_count_row:-pad_count_col, pad_count_col:-pad_count_row] = image
+        # kernel application with sliding window
+        for z in range(image.shape[2]):
+            for x in range(image.shape[0]):
+                for y in range(image.shape[1]):
+                        out[x,y,z]=(kernel * image_padded[x: x+kern_count_col, y: y+kern_count_row, z]).sum()
     return out

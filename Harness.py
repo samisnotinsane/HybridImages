@@ -43,11 +43,11 @@ def my_pad(a):
     print(b)
 
 if __name__ == '__main__':
-    # rgb_img = load_image_as_rgb_array('data/fish.bmp')
+    rgb_img = load_image_as_rgb_array('data/fish.bmp')
     # print_image_meta(rgb_img)
-    # show_image(rgb_img, grey=False)
+    show_image(rgb_img, grey=False)
 
-    bw_img = load_image_as_bw_array('data/fish.bmp')
+    # bw_img = load_image_as_bw_array('data/fish.bmp')
     # print_image_meta(bw_img)
     # show_image(bw_img, grey=True)
 
@@ -55,8 +55,8 @@ if __name__ == '__main__':
     # coordinates: origin 0,0 is at top-left corner
     # bw_img_copy = bw_img.copy()
     kernel = 1/9 * np.ones((3,3))
-    blur_img = convolve(bw_img, kernel)
-    show_image(bw_img, grey=True)
+    blur_img = convolve(rgb_img, kernel)
+    show_image(rgb_img, grey=True)
     show_image(blur_img, grey=True)
 
     print("Terminating...")
