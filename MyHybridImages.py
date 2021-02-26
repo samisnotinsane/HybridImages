@@ -5,7 +5,7 @@ from MyConvolution import convolve
 
 def myHybridImages(lowImage: np.ndarray, lowSigma: float, highImage: np.ndarray, highSigma:float) -> np.ndarray:
     """
-    Create hybrid images by combining a low-pass nad high-pass filtered pair.
+    Create hybrid images by combining a low-pass and high-pass filtered pair.
 
     :param lowImage: the image to low-pass filter (either greyscale shape=(rows, cols) or colour shape=(rows,cols,channels))
     :type numpy.ndarray
@@ -21,6 +21,7 @@ def myHybridImages(lowImage: np.ndarray, lowSigma: float, highImage: np.ndarray,
         convolved with a Gaussian of s.d. highSigma. The resultant image has the same size as the input images.
     :rtype numpy.ndarray
     """
+
     return np.zeros((1,1))
 
 def makeGaussianKernel(sigma: float) -> np.ndarray:
@@ -29,4 +30,15 @@ def makeGaussianKernel(sigma: float) -> np.ndarray:
     The kernel values should sum to 1.0, and the size should be floor(8*sigma+1) or 
     floor(8*sigma+1)+1 (whichever is odd).
     """
-    return np.zeros((1,1))
+    size = np.floor(8 * sigma + 1).astype(int)
+    # ensure size remains odd
+    if size % 2 == 0:
+        size += 1
+    mean = np.array([0,0])
+    cov = np.array(
+        [[1,0],
+         [0,1]]
+    )
+    rng = np.random.default_rng()
+    K = rng.multivariate_normal(mean, cov, (size,size))
+    return K
