@@ -2,8 +2,7 @@ from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 
-from MyHybridImages import *
-from MyConvolution import zero_padding
+from MyConvolution import convolve
 
 def load_image_as_rgb_array(path: str) -> np.ndarray:
     image = Image.open(path)
@@ -55,16 +54,9 @@ if __name__ == '__main__':
     # print(bw_img) # pixel value at row 10, col 20
     # coordinates: origin 0,0 is at top-left corner
     # bw_img_copy = bw_img.copy()
-    padded_img = zero_padding(bw_img, template=np.zeros((10, 10)))
-    show_image(padded_img, grey=True)
+    kernel = 1/9 * np.ones((3,3))
+    blur_img = convolve(bw_img, kernel)
+    show_image(bw_img, grey=True)
+    show_image(blur_img, grey=True)
 
-    a = np.random.randint(low=0,high=255,size=(10,10))
-    t = np.ones((6,6))
-    rows, cols = t.shape
-    prows = int(np.floor(rows/2))
-    pcols = int(np.floor(cols/2))
-    b = np.pad(a, (prows, pcols), mode='constant')
-
-    print(bw_img.shape)
-    print(padded_img.shape)
     print("Terminating...")
