@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from MyConvolution import convolve
+from MyHybridImages import *
 
 def load_image_as_rgb_array(path: str) -> np.ndarray:
     image = Image.open(path)
@@ -43,20 +44,11 @@ def my_pad(a):
     print(b)
 
 if __name__ == '__main__':
-    rgb_img = load_image_as_rgb_array('data/fish.bmp')
-    # print_image_meta(rgb_img)
-    show_image(rgb_img, grey=False)
+    lo_freq_img = load_image_as_rgb_array('data/dog.bmp')
+    hi_freq_img = load_image_as_rgb_array('data/cat.bmp')
 
-    # bw_img = load_image_as_bw_array('data/fish.bmp')
-    # print_image_meta(bw_img)
-    # show_image(bw_img, grey=True)
+    lo_sigma, hi_sigma  = 3.5, 5.5 # free parameters
+    hybrid = myHybridImages(lo_freq_img, lo_sigma, hi_freq_img, hi_sigma)
 
-    # print(bw_img) # pixel value at row 10, col 20
-    # coordinates: origin 0,0 is at top-left corner
-    # bw_img_copy = bw_img.copy()
-    kernel = 1/9 * np.ones((3,3))
-    blur_img = convolve(rgb_img, kernel)
-    show_image(rgb_img, grey=True)
-    show_image(blur_img, grey=True)
-
+    show_image(hybrid, grey=False)
     print("Terminating...")
