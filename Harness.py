@@ -50,12 +50,15 @@ def my_pad(a):
     print(b)
 
 if __name__ == '__main__':
-    lo_freq_img = load_image_as_rgb_array('data/dog.bmp')
-    hi_freq_img = load_image_as_rgb_array('data/cat.bmp')
+    lo_freq_img = load_image_as_rgb_array('data/Naomi_Watts.jpg')
+    hi_freq_img = load_image_as_rgb_array('data/Nicolas_Cage.jpg')
 
-    lo_sigma, hi_sigma  = 3.5, 5.5 # free parameters
+    # common free parameter pairs:
+    # marilyn-einstein: 2.5, 3.5
+    # watts-cage: 1.6, 2.5
+
+    lo_sigma, hi_sigma = 1.6, 2.5 # free parameters 
     hybrid = myHybridImages(lo_freq_img, lo_sigma, hi_freq_img, hi_sigma)
-    save_image(hybrid, fname='cat-dog')
-
-    show_image(hybrid, grey=False)
+    save_image(hybrid, fname='watts-cage')
+    show_image(hybrid, grey=True)
     print("Terminating...")

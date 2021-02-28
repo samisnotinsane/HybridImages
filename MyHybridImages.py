@@ -33,7 +33,7 @@ def myHybridImages(lowImage: np.ndarray, lowSigma: float, highImage: np.ndarray,
     low_pass_of_highimage = convolve(highImage, high_sigma_kernel)
 
     print(f'Acquiring High-pass filtered image...')
-    high_pass_img = (highImage - low_pass_of_highimage)
+    high_pass_img = highImage - low_pass_of_highimage
 
     # visualise high_pass image by adding 128 as high freq image is 0 mean with negative values
     # show_image(high_pass_img + 128, grey=False)
