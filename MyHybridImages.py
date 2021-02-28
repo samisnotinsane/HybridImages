@@ -2,7 +2,6 @@ import math
 import numpy as np
 
 from MyConvolution import convolve
-from Harness import show_image
 
 def myHybridImages(lowImage: np.ndarray, lowSigma: float, highImage: np.ndarray, highSigma:float) -> np.ndarray:
     """

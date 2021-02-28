@@ -25,6 +25,12 @@ def show_image(img: np.ndarray, grey: bool):
     plt.show()
     print("Image closed")
 
+def save_image(image: np.ndarray, fname: str):
+    path = 'out/' + fname + '.png'
+    im = Image.fromarray(image)
+    im.save(path)
+    print(f"Image saved to {path}")
+
 def print_image_meta(img: np.ndarray):
     dim = len(img.shape)
     if dim == 3:
@@ -49,6 +55,7 @@ if __name__ == '__main__':
 
     lo_sigma, hi_sigma  = 3.5, 5.5 # free parameters
     hybrid = myHybridImages(lo_freq_img, lo_sigma, hi_freq_img, hi_sigma)
+    save_image(hybrid, fname='cat-dog')
 
     show_image(hybrid, grey=False)
     print("Terminating...")
