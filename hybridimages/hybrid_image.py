@@ -1,10 +1,9 @@
 import math
 import numpy as np
 
-from MyConvolution import convolve
-from Harness import show_image
+from hybridimages.convolution import convolve
 
-def myHybridImages(lowImage: np.ndarray, lowSigma: float, highImage: np.ndarray, highSigma:float) -> np.ndarray:
+def createHybridImage(lowImage: np.ndarray, lowSigma: float, highImage: np.ndarray, highSigma:float) -> np.ndarray:
     """
     Create hybrid images by combining a low-pass and high-pass filtered pair.
 
@@ -28,7 +27,6 @@ def myHybridImages(lowImage: np.ndarray, lowSigma: float, highImage: np.ndarray,
     print(f'Applying convolution...')
     low_pass_image = convolve(lowImage, low_sigma_kernel)
     print(f'Low-pass filter successfully applied')
-    show_image(low_pass_image, grey=False)
     high_sigma_kernel = makeGaussianKernel(highSigma)
     print(f'Applying convolution...')
     low_pass_of_highimage = convolve(highImage, high_sigma_kernel)
@@ -37,7 +35,7 @@ def myHybridImages(lowImage: np.ndarray, lowSigma: float, highImage: np.ndarray,
     high_pass_img = highImage - low_pass_of_highimage
 
     # visualise high_pass image by adding 128 as high freq image is 0 mean with negative values
-    show_image(high_pass_img + 128, grey=False)
+    # show_image(high_pass_img + 128, grey=False)
 
     hybrid_img = low_pass_image + high_pass_img
     print(f'Hybrid image computed successfully')
