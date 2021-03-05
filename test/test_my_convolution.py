@@ -95,9 +95,10 @@ class TestMyConvolution(unittest.TestCase):
             np.testing.assert_equal(conv_d, scipy_conv_d)
 
     def test_bw_result_realistic(self):
+        np.random.seed(70)
         x_pixels = np.random.randint(225, 265)
         y_pixels = np.random.randint(225, 265)
-        max_k_xy = 6
+        max_k_xy = 32
         k_sample_space = np.arange(1, max_k_xy, 2)
         k_x = np.random.choice(k_sample_space)
         k_y = np.random.choice(k_sample_space)
@@ -108,9 +109,10 @@ class TestMyConvolution(unittest.TestCase):
         np.testing.assert_equal(conv, scipy_conv)
 
     def test_colour_result_realistic(self):
+        np.random.seed(68)
         x_pixels = np.random.randint(225, 265)
         y_pixels = np.random.randint(225, 265)
-        max_k_xy = 6
+        max_k_xy = 32
         k_sample_space = np.arange(1, max_k_xy, 2)
         k_x = np.random.choice(k_sample_space)
         k_y = np.random.choice(k_sample_space)
