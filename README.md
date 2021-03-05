@@ -30,7 +30,9 @@ The values inside the kernel determine the type of image filtering we perform. I
 ![Convolving an image with a 3x3 kernel](https://cdn-media-1.freecodecamp.org/images/Gjxh-aApWTzIRI1UNmGnNLrk8OKsQaf2tlDu)
 Source: [freeCodeCamp](https://www.freecodecamp.org/news/an-intuitive-guide-to-convolutional-neural-networks-260c2de0a050/)
 
+To create hybrid images, [Gaussian blur](https://en.wikipedia.org/wiki/Gaussian_blur) is used. This convolves an input image with a [Gaussian function](https://en.wikipedia.org/wiki/Gaussian_function) which is visualised below. This function accepts a parameter, sigma, which in the context of image convolution means how much to blur an image.
 
+![A Gaussian function](https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Gaussian_2d_surface.png/220px-Gaussian_2d_surface.png)
 ## Usage
 This package only relies on numpy to perform all kinds of convolution. The unit tests make use of [scipy.signal.convolve2d](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.convolve2d.html) as a basis for comparison and checking correctness.
 
