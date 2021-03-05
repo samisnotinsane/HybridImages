@@ -39,6 +39,3 @@ This package only relies on numpy to perform all kinds of convolution. The unit 
 [matplotlib](https://matplotlib.org) is required to visualise images and [Pillow](https://pillow.readthedocs.io/en/stable/) is used to load image files.
 
 See ``Harness.py`` for a self contained example. It also contains some helper methods for common image operations such as loading, viewing and saving. 
-
-## Experiment
-The best way to truly understand a concept is to apply it practically. I created some Jupyter notebooks during development which can be found in the [notebooks](./notebooks) folder.
