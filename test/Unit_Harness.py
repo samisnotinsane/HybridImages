@@ -1,7 +1,11 @@
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
+
 import numpy as np
-from numpy.lib.function_base import select
-from MyConvolution import convolve
 from scipy.signal import convolve2d
+from hybridimages.convolution import convolve
 
 def test_bw_result_realistic():
     x_pixels = np.random.randint(225, 265)

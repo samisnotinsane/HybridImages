@@ -45,14 +45,6 @@ def print_image_meta(img: np.ndarray):
         print(f"height: {h}, width: {w}, channel: 1")
     print(f"Image loaded as: {type(img)}")
 
-def my_pad(a):
-    rows, cols = a.shape
-    pad_rows = int(np.floor(rows/2))
-    pad_cols = int(np.floor(cols/2))
-    b = np.zeros((rows + 2*pad_rows, cols + 2*pad_cols))
-    print(b.shape)
-    print(b)
-
 if __name__ == '__main__':
     # lo_freq_img = load_image_as_bw_array('data/Naomi_Watts.jpg')
     # hi_freq_img = load_image_as_bw_array('data/Nicolas_Cage.jpg')
