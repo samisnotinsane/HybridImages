@@ -1,6 +1,82 @@
 # HybridImages
 Hybrid images are special types of images which takes advantage of perceptual grouping to change the meaning of an image as viewing distance is changed [[MIT Publication]](hybrid-images-mit-paper.pdf).
 
+## Usage
+Once this repo has been cloned, you can copy the `hybridimages` folder into your project and use it by importing it as a package:
+````
+from hybridimages.hybrid_image import createHybridImage
+````
+
+To create a hybrid image, you will need two images that are perceptually aligned (e.g. if you want to blend two faces, the eyes and noses must align).
+
+Load the images as a numpy array then set the values of free parameters `lo_sigma` and `hi_sigma`. These need to be tuned according to your specific images and require experimentation.
+
+````
+from PIL import Image
+import numpy as np
+from hybridimages.hybrid_image import createHybridImage
+
+# Load images and convert to numpy array
+img_A = Image.open('data/dog.bmp')
+img_B = Image.open('data/cat.bmp')
+lo_freq_img = np.asarray(img_A)
+hi_freq_img = np.asarray(img_B)
+
+# define free parameters (experimental tuning required)
+lo_sigma, hi_sigma = 6.5, 5.0 
+
+# generate hybrid image
+hybrid = createHybridImage(lo_freq_img, lo_sigma, hi_freq_img, hi_sigma)
+
+# preview image
+plt.imshow(img)
+
+# save to disk
+im = Image.fromarray(hybrid)
+im.save('out/hybrid.png')
+````
+
+If everything has worked, then you will see this message in your terminal, followed by the image opening up automatically.
+````
+Hybrid image computed successfully
+````
+
+If your image is greyscale, load it as a single channel image as follows:
+
+````
+image = Image.open(path).convert('L')
+````
+
+**Note**:
+This package only relies on numpy to perform convolution. The unit tests make use of [scipy.signal.convolve2d](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.convolve2d.html) as a basis for comparison and checking correctness.
+
+[Matplotlib](https://matplotlib.org) is required to visualise images and [Pillow](https://pillow.readthedocs.io/en/stable/) is used to load image files.
+
+
+
+### Troubleshooting
+Sometimes Python does not recognise an import even though the package has been copied, this this case, copy the following to the top of your script.
+
+````
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
+````
+
+When viewing a greyscale image, matplotlib may fail to render it correctly. The following can fix this issue.
+
+````
+img = np.squeeze(img)
+plt.imshow(img, cmap="gray")
+````
+
+### Example Code
+
+See [Harness.py](./test/Harness.py) for a self contained example. It also contains some helper methods for common image operations such as loading, viewing and saving if you're not familiar.
+
+## Concept
+
 The following is an example of a hybrid image that has been downsampled which makes it clear to understand a hybrid image without having to walk further away from your screen.
 
 ![Hybrid image: larger image should appear to be Nicholas Cage. Smaller image should appear like Naomi Watts.](progressive-downsample.png)
@@ -33,9 +109,4 @@ Source: [freeCodeCamp](https://www.freecodecamp.org/news/an-intuitive-guide-to-c
 To create hybrid images, [Gaussian blur](https://en.wikipedia.org/wiki/Gaussian_blur) is used. This convolves an input image with a [Gaussian function](https://en.wikipedia.org/wiki/Gaussian_function) which is visualised below. This function accepts a parameter, sigma, which in the context of image convolution means how much to blur an image.
 
 ![A Gaussian function](https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Gaussian_2d_surface.png/220px-Gaussian_2d_surface.png)
-## Usage
-This package only relies on numpy to perform all kinds of convolution. The unit tests make use of [scipy.signal.convolve2d](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.convolve2d.html) as a basis for comparison and checking correctness.
 
-[matplotlib](https://matplotlib.org) is required to visualise images and [Pillow](https://pillow.readthedocs.io/en/stable/) is used to load image files.
-
-See ``Harness.py`` for a self contained example. It also contains some helper methods for common image operations such as loading, viewing and saving. 
